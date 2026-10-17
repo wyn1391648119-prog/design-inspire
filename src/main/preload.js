@@ -17,5 +17,8 @@ contextBridge.exposeInMainWorld('inspire', {
   removeFromLibrary: (id) => ipcRenderer.invoke('library:remove', id),
   revealInFolder: (id) => ipcRenderer.invoke('library:reveal', id),
 
+  exportMoodboard: (entries) => ipcRenderer.invoke('moodboard:export', entries),
+  onFeedsUpdated: (cb) => ipcRenderer.on('feeds:updated', cb),
+
   openExternal: (url) => ipcRenderer.invoke('open:external', url),
 });

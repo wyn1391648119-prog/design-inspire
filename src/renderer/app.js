@@ -67,6 +67,12 @@ function bindChrome() {
   $('#refresh').addEventListener('click', () => refresh(true));
   $('#content').addEventListener('click', onContentClick);
   $('#content').addEventListener('submit', onContentSubmit);
+
+  // 托盘后台刷新到新内容 / 窗口重新聚焦时，读一次缓存刷新界面
+  window.inspire.onFeedsUpdated(() => refresh(false));
+  window.addEventListener('focus', () => {
+    if (['inspire', 'news'].includes(state.tab)) refresh(false);
+  });
 }
 
 async function refresh(force) {
@@ -111,9 +117,14 @@ function renderList() {
       : '<div class="empty">没有匹配的资讯</div>';
   } else if (state.tab === 'favorites') {
     const favs = Object.values(state.favorites).sort((a, b) => b.savedAt - a.savedAt);
-    c.innerHTML = favs.length
-      ? `<div class="grid">${favs.map(favCardHtml).join('')}</div>`
-      : '<div class="empty">还没有收藏<br>在灵感卡片上点「☆ 收藏」即可加入</div>';
+    c.innerHTML =
+      `<div class="fav-toolbar">
+        <span>${favs.length} 条收藏</span>
+        <button data-action="export-moodboard">🧩 导出 Moodboard</button>
+      </div>` +
+      (favs.length
+        ? `<div class="grid">${favs.map(favCardHtml).join('')}</div>`
+        : '<div class="empty">还没有收藏<br>在灵感卡片上点「☆ 收藏」即可加入</div>');
   } else if (state.tab === 'library') {
     c.innerHTML = state.library.length
       ? `<div class="grid">${state.library.map(libCardHtml).join('')}</div>`
@@ -261,6 +272,12 @@ async function onContentClick(e) {
       state.sources = await window.inspire.listSources();
       toast('已删除订阅源');
       await refresh(true);
+    } else if (action === 'export-moodboard') {
+      const entries = Object.values(state.favorites);
+      if (!entries.some((f) => f.item && f.item.image)) return toast('还没有带配图的收藏');
+      toast('正在生成拼贴…');
+      const saved = await window.inspire.exportMoodboard(entries);
+      toast(saved ? 'Moodboard 已导出：' + saved : '已取消导出');
     }
   } catch (err) {
     toast('操作失败：' + (err.message || err));

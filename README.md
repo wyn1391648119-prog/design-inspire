@@ -8,6 +8,8 @@
 - **设计资讯**：紧凑列表模式，适合快速扫标题；支持关键词搜索 + 分类筛选
 - **一键收藏 + 标签管理**：收藏任意条目，逗号分隔打标签，数据保存在本机
 - **本地灵感图库**：把喜欢的配图下载到本机（`userData/inspire-library`），可一键在文件管理器中定位
+- **Moodboard 导出**：把收藏一键拼成深色瀑布流 PNG 拼贴图（含标题、来源、标签）
+- **托盘常驻 + 新内容提醒**：关窗不退出，后台每 30 分钟静默刷新，有新内容时系统通知 + Dock 角标
 - **订阅源管理**：内置 22 个精选源，支持自由增删自定义 RSS 源；抓取失败的源会单独列出，不影响整体浏览
 
 ## 内置订阅源（按需求分类，均已验证返回有效 RSS）
@@ -35,19 +37,80 @@ npm start
 
 ## 打包分发
 
+本地打包（输出当前平台安装包）：
+
 ```bash
-npm run dist   # 输出 macOS / Windows / Linux 安装包（electron-builder）
+npm run dist
 ```
+
+云端三平台打包（推荐）：仓库附带 GitHub Actions 流水线模板（见下方），在仓库 Actions 页手动触发，或推送版本 tag 即可同时产出 macOS / Windows / Linux 安装包：
+
+```bash
+git tag v0.1.0 && git push --tags   # 自动构建并发布 Release
+```
+
+<details>
+<summary>📄 如果仓库里还没有 .github/workflows/build.yml，点开展开复制此文件</summary>
+
+```yaml
+name: Build Installers
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - name: Build installers
+        run: npx electron-builder --publish never
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: DesignInspire-${{ matrix.os }}
+          path: |
+            dist/*.dmg
+            dist/*.zip
+            dist/*.exe
+            dist/*.AppImage
+      - name: Publish release (on tag)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.dmg
+            dist/*.zip
+            dist/*.exe
+            dist/*.AppImage
+```
+
+</details>
 
 ## 目录结构
 
 ```
 src/
 ├── main/                 # Electron 主进程
-│   ├── main.js           # 窗口、IPC、dlib:// 本地图库协议
+│   ├── main.js           # 窗口、IPC、托盘常驻、后台刷新通知、dlib:// 协议
+│   ├── tray.js           # 托盘图标与菜单
+│   ├── moodboard.js      # 收藏拼贴离屏渲染导出 PNG
 │   ├── preload.js        # contextBridge 安全桥（window.inspire）
 │   ├── feeds.js          # RSS 聚合抓取 + 配图提取 + 缓存 + 不规范 XML 降级解析
-│   ├── store.js          # JSON 持久化（收藏 / 图库索引 / 订阅源）
+│   ├── store.js          # JSON 持久化（收藏 / 图库索引 / 订阅源 / 设置）
 │   ├── library.js        # 图片下载落盘
 │   └── default-sources.js# 内置订阅源清单
 └── renderer/             # 渲染进程（无构建步骤的原生 JS）
@@ -66,10 +129,10 @@ src/
 
 ## Roadmap
 
-- [ ] 托盘常驻 + 新内容角标提醒
+- [x] 托盘常驻 + 新内容角标提醒
+- [x] 收藏导出为 moodboard（图片拼贴）
 - [ ] Behance / Awwwards 官方 API 接入
 - [ ] 图库瀑布流 + 按标签过滤
-- [ ] 收藏导出为 moodboard（图片拼贴）
 
 ## License
 

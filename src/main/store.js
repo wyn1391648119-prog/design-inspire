@@ -4,6 +4,8 @@ const crypto = require('crypto');
 const { app } = require('electron');
 const DEFAULT_SOURCES = require('./default-sources');
 
+const DEFAULT_SETTINGS = { cacheMinutes: 10, trayRefreshMinutes: 30, lastSeenId: null };
+
 // 轻量 JSON 持久化：收藏、图库索引、自定义订阅源、设置
 class Store {
   constructor() {
@@ -12,7 +14,7 @@ class Store {
       favorites: {},
       library: [],
       sources: DEFAULT_SOURCES,
-      settings: { cacheMinutes: 10 },
+      settings: { ...DEFAULT_SETTINGS },
     };
     try {
       if (fs.existsSync(this.file)) {
@@ -21,6 +23,8 @@ class Store {
     } catch (e) {
       console.error('[store] 读取本地数据失败，使用默认值：', e.message);
     }
+    // 老版本数据文件可能缺少新增设置项，这里补默认值
+    this.data.settings = Object.assign({ ...DEFAULT_SETTINGS }, this.data.settings || {});
   }
 
   save() {
@@ -33,6 +37,11 @@ class Store {
 
   get(key) { return this.data[key]; }
   set(key, value) { this.data[key] = value; this.save(); }
+
+  updateSettings(patch) {
+    Object.assign(this.data.settings, patch);
+    this.save();
+  }
 
   idOf(item) {
     return crypto.createHash('md5').update(item.link || item.title || String(Date.now())).digest('hex');

@@ -201,6 +201,26 @@ main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
   color: var(--muted);
 }
 
+/* ---------- 收藏工具条 ---------- */
+.fav-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.fav-toolbar button {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+
 /* ---------- 资讯列表 ---------- */
 .news-list { display: flex; flex-direction: column; gap: 2px; }
 .news-row {
