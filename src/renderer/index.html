@@ -14,8 +14,8 @@
       <nav>
         <button class="nav-item active" data-tab="inspire">✨ 灵感信息流</button>
         <button class="nav-item" data-tab="news">📰 设计资讯</button>
-        <button class="nav-item" data-tab="favorites">⭐ 我的收藏</button>
-        <button class="nav-item" data-tab="library">🖼 本地图库</button>
+        <button class="nav-item" data-tab="favorites">⭐ 我的收藏<span class="badge" id="badge-favorites"></span></button>
+        <button class="nav-item" data-tab="library">🖼 本地图库<span class="badge" id="badge-library"></span></button>
         <button class="nav-item" data-tab="sources">⚙ 订阅源管理</button>
       </nav>
       <div class="sidebar-foot">收藏与图库均保存在本机</div>
@@ -23,6 +23,7 @@
 
     <main>
       <header class="toolbar">
+        <div id="tab-title">灵感信息流</div>
         <div id="filterbar">
           <input id="search" type="search" placeholder="搜索标题 / 摘要 / 来源…">
           <select id="category"></select>
@@ -33,6 +34,7 @@
     </main>
   </div>
 
+  <div id="lightbox"><img alt="大图预览"><span class="lb-hint">点击任意处或按 ESC 关闭</span></div>
   <div id="toast"></div>
   <script src="app.js"></script>
 </body>

@@ -1,5 +1,5 @@
 // 内置订阅源：上线前均逐一验证可访问且返回有效 RSS/Atom 内容。
-// 分类：设计案例 / 视觉灵感 / 插画艺术 / 包装设计 / 高奢时装（秀场）/ 装置艺术 / 品牌设计 / 建筑空间 / UI·UX
+// 分类：设计案例 / 视觉灵感 / 插画艺术 / 包装设计 / 网页设计 / 高奢时装（秀场）/ 装置艺术 / 品牌设计 / 建筑空间 / 中文设计 / UI·UX
 // 用户可在「订阅源管理」页自由增删，自定义源会保存到本地数据文件。
 module.exports = [
   // —— 设计案例 / 综合设计平台 ——
@@ -24,6 +24,9 @@ module.exports = [
   { id: 'potw', name: 'Packaging of the World', url: 'https://packagingoftheworld.com/feed/', category: '包装设计' },
   { id: 'dieline', name: 'The Dieline', url: 'https://thedieline.com/feed/', category: '包装设计' },
 
+  // —— 网页设计 ——
+  { id: 'awwwards', name: 'Awwwards Blog', url: 'https://www.awwwards.com/blog/feed/', category: '网页设计' },
+
   // —— 高奢时装 / 秀场 ——
   { id: 'wallpaper', name: 'Wallpaper*', url: 'https://www.wallpaper.com/rss', category: '高奢时装' },
   { id: 'vogue', name: 'Vogue', url: 'https://www.vogue.com/feed/rss', category: '高奢时装' },
@@ -39,6 +42,9 @@ module.exports = [
   { id: 'mymodernmet', name: 'My Modern Met', url: 'https://mymodernmet.com/feed/', category: '装置艺术' },
   { id: 'archdaily', name: 'ArchDaily', url: 'https://www.archdaily.com/rss', category: '建筑空间' },
   { id: 'yellowtrace', name: 'Yellowtrace', url: 'https://www.yellowtrace.com.au/feed/', category: '建筑空间' },
+
+  // —— 中文设计 ——
+  { id: 'logonews', name: '标志情报局', url: 'https://www.logonews.cn/feed', category: '中文设计' },
 
   // —— UI / UX ——
   { id: 'smashing', name: 'Smashing Magazine', url: 'https://www.smashingmagazine.com/feed/', category: 'UI/UX' },

@@ -10,6 +10,15 @@ const state = {
   sources: [],
   query: '',
   category: '全部',
+  libraryTag: '全部',
+};
+
+const TAB_TITLES = {
+  inspire: '灵感信息流',
+  news: '设计资讯',
+  favorites: '我的收藏',
+  library: '本地图库',
+  sources: '订阅源管理',
 };
 
 const esc = (s) =>
@@ -38,6 +47,16 @@ function toast(msg) {
   toast._t = setTimeout(() => el.classList.remove('show'), 2400);
 }
 
+/* ---------- 大图预览 ---------- */
+function openLightbox(src) {
+  if (!src) return;
+  $('#lightbox img').src = src;
+  $('#lightbox').classList.add('show');
+}
+function closeLightbox() {
+  $('#lightbox').classList.remove('show');
+}
+
 /* ---------- 启动 ---------- */
 async function boot() {
   const [sources, favorites, library] = await Promise.all([
@@ -49,7 +68,7 @@ async function boot() {
   bindChrome();
   // 远程配图被防盗链拦截时替换为占位块（CSP 禁止内联 onerror，用捕获阶段代理）
   document.addEventListener('error', (e) => {
-    if (e.target && e.target.tagName === 'IMG') {
+    if (e.target && e.target.tagName === 'IMG' && e.target.closest('#content')) {
       const d = document.createElement('div');
       d.className = 'card-img placeholder';
       e.target.replaceWith(d);
@@ -67,6 +86,8 @@ function bindChrome() {
   $('#refresh').addEventListener('click', () => refresh(true));
   $('#content').addEventListener('click', onContentClick);
   $('#content').addEventListener('submit', onContentSubmit);
+  $('#lightbox').addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
   // 托盘后台刷新到新内容 / 窗口重新聚焦时，读一次缓存刷新界面
   window.inspire.onFeedsUpdated(() => refresh(false));
@@ -99,7 +120,10 @@ function filteredItems() {
 
 function render() {
   document.querySelectorAll('.nav-item').forEach((b) => b.classList.toggle('active', b.dataset.tab === state.tab));
+  $('#tab-title').textContent = TAB_TITLES[state.tab] || '';
   $('#filterbar').style.display = ['inspire', 'news'].includes(state.tab) ? 'flex' : 'none';
+  $('#badge-favorites').textContent = Object.keys(state.favorites).length || '';
+  $('#badge-library').textContent = state.library.length || '';
   renderList();
 }
 
@@ -126,13 +150,28 @@ function renderList() {
         ? `<div class="grid">${favs.map(favCardHtml).join('')}</div>`
         : '<div class="empty">还没有收藏<br>在灵感卡片上点「☆ 收藏」即可加入</div>');
   } else if (state.tab === 'library') {
-    c.innerHTML = state.library.length
-      ? `<div class="grid">${state.library.map(libCardHtml).join('')}</div>`
-      : '<div class="empty">图库为空<br>在灵感卡片上点「⬇ 存入图库」，图片会下载到本机</div>';
+    renderLibrary(c);
   } else if (state.tab === 'sources') {
     c.innerHTML = sourcesHtml();
   }
   updateCategoryFilter();
+}
+
+// 图库：标签筛选 + 瀑布流
+function renderLibrary(c) {
+  const allTags = [...new Set(state.library.flatMap((r) => r.tags || []))];
+  if (!allTags.includes(state.libraryTag)) state.libraryTag = '全部';
+  const list = state.library.filter(
+    (r) => state.libraryTag === '全部' || (r.tags || []).includes(state.libraryTag)
+  );
+  const chips = ['全部', ...allTags]
+    .map((t) => `<button class="chip ${t === state.libraryTag ? 'active' : ''}" data-action="lib-tag" data-tag="${esc(t)}">${esc(t)}</button>`)
+    .join('');
+  c.innerHTML =
+    `<div class="lib-toolbar"><div class="chips">${chips}</div><span class="lib-count">${list.length} 张</span></div>` +
+    (list.length
+      ? `<div class="lib-grid">${list.map(libCardHtml).join('')}</div>`
+      : '<div class="empty">图库为空<br>在灵感卡片上点「⬇ 存入图库」，图片会下载到本机</div>');
 }
 
 function tagFormHtml(id, tags) {
@@ -167,8 +206,11 @@ function favCardHtml(entry) {
   const img = it.image
     ? `<img class="card-img" src="${esc(it.image)}" loading="lazy" referrerpolicy="no-referrer">`
     : '<div class="card-img placeholder"></div>';
+  const imgWrap = it.image
+    ? `<a class="img-wrap" data-action="preview" data-img="${esc(it.image)}" title="点击看大图">${img}</a>`
+    : `<div class="img-wrap">${img}</div>`;
   return `<article class="card" data-id="${esc(entry.id)}">
-    <a class="img-wrap" data-action="open" data-link="${esc(it.link)}">${img}</a>
+    ${imgWrap}
     <div class="card-body">
       <div class="meta"><span class="src">${esc(it.sourceName)}</span><span class="cat">${esc(it.category)}</span></div>
       <h3><a data-action="open" data-link="${esc(it.link)}">${esc(it.title)}</a></h3>
@@ -183,7 +225,9 @@ function favCardHtml(entry) {
 
 function libCardHtml(r) {
   return `<article class="card" data-id="${esc(r.id)}">
-    <div class="img-wrap"><img class="card-img" src="dlib://${esc(r.file)}"></div>
+    <div class="img-wrap" data-action="preview" data-img="dlib://${esc(r.file)}" title="点击看大图">
+      <img class="card-img" src="dlib://${esc(r.file)}" loading="lazy">
+    </div>
     <div class="card-body">
       <div class="meta"><span class="src">${esc(r.sourceName)}</span><time>${relTime(r.savedAt)} 入库</time></div>
       <h3><a data-action="open" data-link="${esc(r.link)}">${esc(r.title)}</a></h3>
@@ -242,6 +286,15 @@ async function onContentClick(e) {
     if (el.dataset.link) window.inspire.openExternal(el.dataset.link);
     return;
   }
+  if (action === 'preview') {
+    openLightbox(el.dataset.img);
+    return;
+  }
+  if (action === 'lib-tag') {
+    state.libraryTag = el.dataset.tag;
+    renderList();
+    return;
+  }
 
   try {
     if (action === 'fav') {
@@ -251,7 +304,7 @@ async function onContentClick(e) {
       const res = await window.inspire.toggleFavorite(item, (state.favorites[id] || {}).tags || []);
       state.favorites = await window.inspire.listFavorites();
       toast(res.favored ? '已加入收藏' : '已取消收藏');
-      renderList();
+      render();
     } else if (action === 'save-lib') {
       let item = state.items.find((i) => i.id === id)
         || (state.favorites[id] && state.favorites[id].item);
@@ -260,11 +313,12 @@ async function onContentClick(e) {
       await window.inspire.saveToLibrary(item);
       state.library = await window.inspire.listLibrary();
       toast('已存入本地图库');
+      render();
     } else if (action === 'remove-lib') {
       await window.inspire.removeFromLibrary(id);
       state.library = await window.inspire.listLibrary();
       toast('已从图库删除');
-      renderList();
+      render();
     } else if (action === 'reveal') {
       await window.inspire.revealInFolder(id);
     } else if (action === 'remove-source') {
