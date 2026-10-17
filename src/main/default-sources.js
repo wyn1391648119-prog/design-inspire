@@ -1,5 +1,5 @@
 // 内置订阅源：上线前均逐一验证可访问且返回有效 RSS/Atom 内容。
-// 分类与需求对齐：设计案例 / 视觉灵感 / 插画艺术 / 包装设计 / 高奢时装（秀场）/ 装置艺术 / 品牌设计 / 建筑空间 / UI·UX
+// 分类：设计案例 / 视觉灵感 / 插画艺术 / 包装设计 / 高奢时装（秀场）/ 装置艺术 / 品牌设计 / 建筑空间 / UI·UX
 // 用户可在「订阅源管理」页自由增删，自定义源会保存到本地数据文件。
 module.exports = [
   // —— 设计案例 / 综合设计平台 ——
@@ -36,7 +36,7 @@ module.exports = [
 
   // —— 装置艺术 / 建筑空间 ——
   { id: 'colossal', name: 'Colossal', url: 'https://www.thisiscolossal.com/feed/', category: '装置艺术' },
-  { id: 'stirworld', name: 'STIRworld', url: 'https://stirworld.com/feed/', category: '装置艺术' },
+  { id: 'mymodernmet', name: 'My Modern Met', url: 'https://mymodernmet.com/feed/', category: '装置艺术' },
   { id: 'archdaily', name: 'ArchDaily', url: 'https://www.archdaily.com/rss', category: '建筑空间' },
   { id: 'yellowtrace', name: 'Yellowtrace', url: 'https://www.yellowtrace.com.au/feed/', category: '建筑空间' },
 

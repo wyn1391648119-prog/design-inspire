@@ -1,9 +1,13 @@
 const crypto = require('crypto');
 const Parser = require('rss-parser');
 
+// 完整浏览器 UA：部分站点对非浏览器 UA 返回验证页或拒绝服务
+const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+const TIMEOUT = 20000;
+
 const parser = new Parser({
-  timeout: 15000,
-  headers: { 'User-Agent': 'Mozilla/5.0 DesignInspire/0.1 (+https://github.com)' },
+  timeout: TIMEOUT,
+  headers: { 'User-Agent': UA, Accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*' },
   customFields: {
     item: [
       ['media:content', 'mediaContent'],
@@ -55,13 +59,13 @@ function sanitizeXml(xml) {
   );
 }
 
-async function parseFeed(url) {
+async function parseFeedOnce(url) {
   try {
     return await parser.parseURL(url);
   } catch (e) {
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0 DesignInspire/0.1' },
-      signal: AbortSignal.timeout(15000),
+      headers: { 'User-Agent': UA },
+      signal: AbortSignal.timeout(TIMEOUT),
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
@@ -69,6 +73,16 @@ async function parseFeed(url) {
       throw new Error('返回内容不是有效的 RSS/Atom');
     }
     return parser.parseString(sanitizeXml(text));
+  }
+}
+
+// 跨境网络抖动常见，失败自动重试一次
+async function parseFeed(url) {
+  try {
+    return await parseFeedOnce(url);
+  } catch (e) {
+    await new Promise((r) => setTimeout(r, 2000));
+    return parseFeedOnce(url);
   }
 }
 

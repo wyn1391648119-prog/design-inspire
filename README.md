@@ -22,11 +22,17 @@
 | 包装设计 | Packaging of the World · The Dieline |
 | 品牌设计 | BP&O |
 | 高奢时装 / 秀场 | Vogue · Harper's BAZAAR · Wallpaper* · WWD · Hypebeast · Fashionista · AnOther · ELLE DECOR |
-| 装置艺术 | Colossal · STIRworld |
+| 装置艺术 | Colossal · My Modern Met |
 | 建筑空间 | ArchDaily · Yellowtrace |
 | UI/UX | Smashing Magazine · UX Collective |
 
 > Behance / Dribbble / Awwwards 已关闭公开 RSS，如需接入可在「订阅源管理」中添加第三方镜像源，或后续通过其官方 API 扩展。
+
+## 常见问题
+
+**「订阅源管理」底部出现抓取失败的源？** 属正常现象。27 个源均在海外，跨境网络波动、站点反爬策略变化都会造成偶发失败。应用会自动重试一次，托盘后台每 30 分钟也会再刷新；只有持续多天失败的源才需要处理（删除或告诉我更换）。
+
+**抓取超时或下载图片慢？** 设置环境变量走镜像不受影响（内容直连源站）；如全局有代理，Electron 默认使用系统代理。
 
 ## 快速开始
 
@@ -117,7 +123,7 @@ src/
 │   ├── tray.js           # 托盘图标与菜单
 │   ├── moodboard.js      # 收藏拼贴离屏渲染导出 PNG
 │   ├── preload.js        # contextBridge 安全桥（window.inspire）
-│   ├── feeds.js          # RSS 聚合抓取 + 配图提取 + 缓存 + 不规范 XML 降级解析
+│   ├── feeds.js          # RSS 聚合抓取 + 配图提取 + 缓存 + 自动重试 + 不规范 XML 降级解析
 │   ├── store.js          # JSON 持久化（收藏 / 图库索引 / 订阅源 / 设置）
 │   ├── library.js        # 图片下载落盘
 │   └── default-sources.js# 内置订阅源清单
