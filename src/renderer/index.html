@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: http: data: dlib:;">
+  <link rel="stylesheet" href="styles.css">
+  <title>DesignInspire</title>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo">Design<span>Inspire</span></div>
+      <nav>
+        <button class="nav-item active" data-tab="inspire">✨ 灵感信息流</button>
+        <button class="nav-item" data-tab="news">📰 设计资讯</button>
+        <button class="nav-item" data-tab="favorites">⭐ 我的收藏</button>
+        <button class="nav-item" data-tab="library">🖼 本地图库</button>
+        <button class="nav-item" data-tab="sources">⚙ 订阅源管理</button>
+      </nav>
+      <div class="sidebar-foot">收藏与图库均保存在本机</div>
+    </aside>
+
+    <main>
+      <header class="toolbar">
+        <div id="filterbar">
+          <input id="search" type="search" placeholder="搜索标题 / 摘要 / 来源…">
+          <select id="category"></select>
+        </div>
+        <button id="refresh" title="重新抓取全部订阅源">↻ 刷新</button>
+      </header>
+      <section id="content"></section>
+    </main>
+  </div>
+
+  <div id="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
