@@ -1,4 +1,4 @@
-// 内置订阅源：上线前均验证可访问（HTTP 200 + RSS/XML 格式）。
+// 内置订阅源：上线前均逐一验证可访问且返回有效 RSS/Atom 内容。
 // 分类与需求对齐：设计案例 / 视觉灵感 / 高奢时装（秀场）/ 装置艺术 / 品牌设计 / 建筑空间 / UI·UX
 // 用户可在「订阅源管理」页自由增删，自定义源会保存到本地数据文件。
 module.exports = [
@@ -7,7 +7,7 @@ module.exports = [
   { id: 'designboom', name: 'designboom', url: 'https://www.designboom.com/feed/', category: '设计案例' },
   { id: 'fubiz', name: 'Fubiz', url: 'https://www.fubiz.net/en/feed/', category: '设计案例' },
   { id: 'dezeen', name: 'Dezeen', url: 'https://www.dezeen.com/feed/', category: '设计案例' },
-  { id: 'frameweb', name: 'FRAME', url: 'https://www.frameweb.com/feed/', category: '设计案例' },
+  { id: 'weheart', name: 'We Heart', url: 'https://we-heart.com/feed/', category: '设计案例' },
 
   // —— 视觉灵感 ——
   { id: 'ignant', name: 'IGNANT', url: 'https://www.ignant.com/feed/', category: '视觉灵感' },
@@ -17,10 +17,12 @@ module.exports = [
 
   // —— 高奢时装 / 秀场 ——
   { id: 'wallpaper', name: 'Wallpaper*', url: 'https://www.wallpaper.com/rss', category: '高奢时装' },
+  { id: 'vogue', name: 'Vogue', url: 'https://www.vogue.com/feed/rss', category: '高奢时装' },
+  { id: 'harpersbazaar', name: "Harper's BAZAAR", url: 'https://www.harpersbazaar.com/rss/all.xml/', category: '高奢时装' },
   { id: 'wwd', name: 'WWD', url: 'https://wwd.com/feed/', category: '高奢时装' },
   { id: 'hypebeast', name: 'Hypebeast', url: 'https://hypebeast.com/feed', category: '高奢时装' },
-  { id: 'theimpression', name: 'The Impression', url: 'https://theimpression.com/feed/', category: '高奢时装' },
-  { id: 'nowness', name: 'NOWNESS', url: 'https://www.nowness.com/feed', category: '高奢时装' },
+  { id: 'fashionista', name: 'Fashionista', url: 'https://fashionista.com/.rss/excerpt/', category: '高奢时装' },
+  { id: 'anothermag', name: 'AnOther Magazine', url: 'https://www.anothermag.com/feed', category: '高奢时装' },
   { id: 'elledecor', name: 'ELLE DECOR', url: 'https://www.elledecor.com/rss/all.xml/', category: '高奢时装' },
 
   // —— 装置艺术 / 建筑空间 ——

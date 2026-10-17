@@ -47,6 +47,31 @@ function extractImage(item) {
   return m ? m[1] : null;
 }
 
+// 部分站点的 feed 存在裸属性等不规范 XML，严格解析会失败；
+// 降级方案：抓取原文，给裸属性补上空值引号后再解析
+function sanitizeXml(xml) {
+  return String(xml).replace(/<[^>]+>/g, (tag) =>
+    tag.replace(/(\s)([a-zA-Z_:][-\w:.]*)(\s|\/?>)(?![^<]*=)/g, '$1$2=""$3')
+  );
+}
+
+async function parseFeed(url) {
+  try {
+    return await parser.parseURL(url);
+  } catch (e) {
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 DesignInspire/0.1' },
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    if (!/<(rss|feed|rdf:RDF)[\s>]/i.test(text.slice(0, 2000))) {
+      throw new Error('返回内容不是有效的 RSS/Atom');
+    }
+    return parser.parseString(sanitizeXml(text));
+  }
+}
+
 class Feeds {
   constructor(store) {
     this.store = store;
@@ -60,7 +85,7 @@ class Feeds {
     const sources = this.store.get('sources') || [];
     const results = await Promise.allSettled(
       sources.map(async (s) => {
-        const feed = await parser.parseURL(s.url);
+        const feed = await parseFeed(s.url);
         return (feed.items || []).slice(0, 20).map((it) => {
           const item = {
             sourceId: s.id,
