@@ -25,6 +25,11 @@ class Store {
     }
     // 老版本数据文件可能缺少新增设置项，这里补默认值
     this.data.settings = Object.assign({ ...DEFAULT_SETTINGS }, this.data.settings || {});
+    // 合并新增的内置订阅源：老用户的 sources 已落盘，按 id 补齐缺失的默认源
+    const knownIds = new Set((this.data.sources || []).map((s) => s.id));
+    for (const s of DEFAULT_SOURCES) {
+      if (!knownIds.has(s.id)) this.data.sources.push(s);
+    }
   }
 
   save() {

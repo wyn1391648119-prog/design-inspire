@@ -10,7 +10,7 @@
 - **本地灵感图库**：把喜欢的配图下载到本机（`userData/inspire-library`），可一键在文件管理器中定位
 - **Moodboard 导出**：把收藏一键拼成深色瀑布流 PNG 拼贴图（含标题、来源、标签）
 - **托盘常驻 + 新内容提醒**：关窗不退出，后台每 30 分钟静默刷新，有新内容时系统通知 + Dock 角标
-- **订阅源管理**：内置 22 个精选源，支持自由增删自定义 RSS 源；抓取失败的源会单独列出，不影响整体浏览
+- **订阅源管理**：内置 27 个精选源，支持自由增删自定义 RSS 源；抓取失败的源会单独列出，不影响整体浏览
 
 ## 内置订阅源（按需求分类，均已验证返回有效 RSS）
 
@@ -18,6 +18,8 @@
 | --- | --- |
 | 设计案例 | It's Nice That · designboom · Fubiz · Dezeen · We Heart |
 | 视觉灵感 | IGNANT · Abduzeedo · Mindsparkle Mag |
+| 插画艺术 | Hi-Fructose · Juxtapoz · Illustration Age |
+| 包装设计 | Packaging of the World · The Dieline |
 | 品牌设计 | BP&O |
 | 高奢时装 / 秀场 | Vogue · Harper's BAZAAR · Wallpaper* · WWD · Hypebeast · Fashionista · AnOther · ELLE DECOR |
 | 装置艺术 | Colossal · STIRworld |
@@ -33,6 +35,12 @@
 ```bash
 npm install
 npm start
+```
+
+升级到最新版（不会丢失收藏与图库）：
+
+```bash
+git pull && npm start
 ```
 
 ## 打包分发
@@ -131,6 +139,7 @@ src/
 
 - [x] 托盘常驻 + 新内容角标提醒
 - [x] 收藏导出为 moodboard（图片拼贴）
+- [x] 扩充插画 / 包装设计源
 - [ ] Behance / Awwwards 官方 API 接入
 - [ ] 图库瀑布流 + 按标签过滤
 

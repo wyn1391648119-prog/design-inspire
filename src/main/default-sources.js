@@ -1,5 +1,5 @@
 // 内置订阅源：上线前均逐一验证可访问且返回有效 RSS/Atom 内容。
-// 分类与需求对齐：设计案例 / 视觉灵感 / 高奢时装（秀场）/ 装置艺术 / 品牌设计 / 建筑空间 / UI·UX
+// 分类与需求对齐：设计案例 / 视觉灵感 / 插画艺术 / 包装设计 / 高奢时装（秀场）/ 装置艺术 / 品牌设计 / 建筑空间 / UI·UX
 // 用户可在「订阅源管理」页自由增删，自定义源会保存到本地数据文件。
 module.exports = [
   // —— 设计案例 / 综合设计平台 ——
@@ -14,6 +14,15 @@ module.exports = [
   { id: 'abduzeedo', name: 'Abduzeedo', url: 'https://abduzeedo.com/rss.xml', category: '视觉灵感' },
   { id: 'mindsparkle', name: 'Mindsparkle Mag', url: 'https://mindsparklemag.com/feed/', category: '视觉灵感' },
   { id: 'bpo', name: 'BP&O', url: 'https://bpando.org/feed/', category: '品牌设计' },
+
+  // —— 插画艺术 ——
+  { id: 'hifructose', name: 'Hi-Fructose', url: 'https://hifructose.com/feed/', category: '插画艺术' },
+  { id: 'juxtapoz', name: 'Juxtapoz', url: 'https://www.juxtapoz.com/feed/', category: '插画艺术' },
+  { id: 'illustrationage', name: 'Illustration Age', url: 'https://www.illustrationage.com/feed/', category: '插画艺术' },
+
+  // —— 包装设计 ——
+  { id: 'potw', name: 'Packaging of the World', url: 'https://packagingoftheworld.com/feed/', category: '包装设计' },
+  { id: 'dieline', name: 'The Dieline', url: 'https://thedieline.com/feed/', category: '包装设计' },
 
   // —— 高奢时装 / 秀场 ——
   { id: 'wallpaper', name: 'Wallpaper*', url: 'https://www.wallpaper.com/rss', category: '高奢时装' },
