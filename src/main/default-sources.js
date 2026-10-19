@@ -1,5 +1,5 @@
 // 内置订阅源：上线前均逐一验证可访问且返回有效 RSS/Atom 内容。
-// 分类：设计案例 / 视觉灵感 / 插画艺术 / 包装设计 / 网页设计 / 高奢时装（秀场）/ 装置艺术 / 品牌设计 / 建筑空间 / 中文设计 / UI·UX
+// 分类：设计案例 / 视觉灵感 / 插画艺术 / 包装设计 / 网页设计 / 高奢时装（秀场）/ 装置艺术 / 品牌设计 / 建筑空间 / 室内设计 / 中文设计 / UI·UX
 // 用户可在「订阅源管理」页自由增删，自定义源会保存到本地数据文件。
 module.exports = [
   // —— 设计案例 / 综合设计平台 ——
@@ -37,11 +37,20 @@ module.exports = [
   { id: 'anothermag', name: 'AnOther Magazine', url: 'https://www.anothermag.com/feed', category: '高奢时装' },
   { id: 'elledecor', name: 'ELLE DECOR', url: 'https://www.elledecor.com/rss/all.xml/', category: '高奢时装' },
 
-  // —— 装置艺术 / 建筑空间 ——
+  // —— 装置艺术 ——
   { id: 'colossal', name: 'Colossal', url: 'https://www.thisiscolossal.com/feed/', category: '装置艺术' },
   { id: 'mymodernmet', name: 'My Modern Met', url: 'https://mymodernmet.com/feed/', category: '装置艺术' },
+
+  // —— 建筑空间（室外 / 前沿建筑）——
   { id: 'archdaily', name: 'ArchDaily', url: 'https://www.archdaily.com/rss', category: '建筑空间' },
+  { id: 'archeyes', name: 'ArchEyes', url: 'https://archeyes.com/feed/', category: '建筑空间' },
   { id: 'yellowtrace', name: 'Yellowtrace', url: 'https://www.yellowtrace.com.au/feed/', category: '建筑空间' },
+
+  // —— 室内设计（含商业空间 / 零售店面趋势）——
+  { id: 'homedesigning', name: 'Home Designing', url: 'https://www.home-designing.com/feed', category: '室内设计' },
+  { id: 'decoist', name: 'Decoist', url: 'https://www.decoist.com/feed/', category: '室内设计' },
+  { id: 'leibal', name: 'Leibal', url: 'https://leibal.com/feed/', category: '室内设计' },
+  { id: 'retaildesignblog', name: 'Retail Design Blog', url: 'https://retaildesignblog.net/feed/', category: '室内设计' },
 
   // —— 中文设计 ——
   { id: 'logonews', name: '标志情报局', url: 'https://www.logonews.cn/feed', category: '中文设计' },

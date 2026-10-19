@@ -11,7 +11,7 @@
 - **大图预览**：收藏与图库中点击图片查看大图，ESC 或点击关闭
 - **Moodboard 导出**：把收藏一键拼成深色瀑布流 PNG 拼贴图（含标题、来源、标签）
 - **托盘常驻 + 新内容提醒**：关窗不退出，后台每 30 分钟静默刷新，有新内容时系统通知 + Dock 角标
-- **订阅源管理**：内置 29 个精选源，支持自由增删自定义 RSS 源；抓取失败的源会单独列出，不影响整体浏览
+- **订阅源管理**：内置 34 个精选源，支持自由增删自定义 RSS 源；抓取失败的源会单独列出，不影响整体浏览
 
 ## 内置订阅源（按需求分类，均已验证返回有效 RSS）
 
@@ -25,7 +25,8 @@
 | 品牌设计 | BP&O |
 | 高奢时装 / 秀场 | Vogue · Harper's BAZAAR · Wallpaper* · WWD · Hypebeast · Fashionista · AnOther · ELLE DECOR |
 | 装置艺术 | Colossal · My Modern Met |
-| 建筑空间 | ArchDaily · Yellowtrace |
+| 建筑空间 | ArchDaily · ArchEyes · Yellowtrace |
+| 室内设计 | Home Designing · Decoist · Leibal · Retail Design Blog（商业空间/零售店面趋势） |
 | 中文设计 | 标志情报局 |
 | UI/UX | Smashing Magazine · UX Collective |
 
@@ -156,6 +157,7 @@ src/
 - [x] 扩充插画 / 包装设计源
 - [x] 图库瀑布流 + 标签筛选 + 大图预览
 - [x] Awwwards Blog / 中文设计源
+- [x] 扩充建筑 / 室内外设计趋势源
 - [ ] Behance / 站酷（需自建 RSSHub，见上文）
 - [ ] 每周设计趋势摘要
 
